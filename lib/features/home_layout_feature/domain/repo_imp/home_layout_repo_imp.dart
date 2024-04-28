@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:bmi/features/home_layout_feature/data/data_source/remote/repo/home_layout_repo.dart';
 import 'package:bmi/features/home_layout_feature/domain/models/user_data_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class HomeLayoutRepoImp extends HomeLayoutRepo {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Future<List<UserDataModel>?> getDataUser() async {
     try {
@@ -49,7 +51,7 @@ class HomeLayoutRepoImp extends HomeLayoutRepo {
         'weight': weight,
         'height': height,
         'age': age,
-        'bmi': bmi,
+        'bmi': bmi.toString(),
         'status': status,
         'timestamp': FieldValue.serverTimestamp(),
       });
@@ -63,5 +65,10 @@ class HomeLayoutRepoImp extends HomeLayoutRepo {
     if (bmi >= 18.5 && bmi < 24.9) return 'Normal';
     if (bmi >= 25 && bmi < 29.9) return 'Overweight';
     return 'Obese';
+  }
+
+  @override
+  Future<void> signOutUser() async {
+    await _auth.signOut();
   }
 }

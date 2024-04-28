@@ -7,6 +7,7 @@ import 'package:bmi/features/home_feature/presention/home_screen.dart';
 import 'package:bmi/features/home_layout_feature/presention/cubit/home_layout_cubit.dart';
 import 'package:bmi/features/home_layout_feature/presention/widgets/custom_floating_action_button.dart';
 import 'package:bmi/features/home_layout_feature/presention/widgets/custom_list_view.dart';
+import 'package:bmi/features/sign_in_feature/presention/sign_in_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,23 @@ class _HomeLayoutScreenState extends State<HomeLayoutScreen> {
     return BlocProvider(
       create: (context) => HomeLayoutCubit(),
       child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: IconButton(
+                  onPressed: () {
+                    getIt.get<HomeLayoutCubit>().signOutUsrCubit();
+                    navigatTo(context, const SignInScreen());
+                  },
+                  icon: const Icon(
+                    Icons.logout_rounded,
+                    size: 35,
+                  )),
+            )
+          ],
+        ),
         floatingActionButton:
             CustomFloatingActionButton(homeLayoutCubit: homeLayoutCubit),
         body: BlocBuilder<HomeLayoutCubit, HomeLayoutState>(

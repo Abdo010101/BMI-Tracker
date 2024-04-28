@@ -21,4 +21,5 @@ class AppStrings {
   static const String noDataFound =
       'No Data For You Yet Please Insert Your data';
   static const String dataError = 'Data Error Happen';
+  static const String editButton = "Edit";
 }

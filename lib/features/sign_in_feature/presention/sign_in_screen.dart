@@ -37,7 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 bloc: signInCubit,
                 builder: (context, state) {
                   return state is SignInLoading
-                      ? const CircularProgressIndicator()
+                      ? const Center(child: CircularProgressIndicator())
                       : DefalutButton(
                           title: AppStrings.signInButton,
                           onTap: () async {

@@ -10,6 +10,11 @@ part 'home_layout_state.dart';
 
 class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   HomeLayoutCubit() : super(HomeLayoutInitial());
+
+  TextEditingController weightController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+
   HomeLayoutRepo homeLayoutRepo = getIt.get<HomeLayoutRepo>();
   List<UserDataModel> userListData = [];
   void getDataFromFirebaseCubit() async {
@@ -31,7 +36,7 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
     getDataFromFirebaseCubit();
   }
 
-  void editItemForUserCubit(
+  Future<void> editItemForUserCubit(
       {required String documentId,
       required String weight,
       required String height,
@@ -41,5 +46,17 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
         documentId: documentId, weight: weight, height: height, age: age);
     emit(UserItemUpdateSuccess());
     getDataFromFirebaseCubit();
+  }
+
+  void signOutUsrCubit() async {
+    emit(UserSignOutLoading());
+    await homeLayoutRepo.signOutUser();
+    emit(UserSignOutSuccess());
+  }
+
+  void clearDataFields() {
+    ageController.clear();
+    weightController.clear();
+    heightController.clear();
   }
 }

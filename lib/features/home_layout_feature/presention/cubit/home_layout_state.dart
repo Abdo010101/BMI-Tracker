@@ -25,3 +25,7 @@ class UserItemDeleteSuccess extends HomeLayoutState {}
 class UserItemUpdateLoading extends HomeLayoutState {}
 
 class UserItemUpdateSuccess extends HomeLayoutState {}
+
+class UserSignOutLoading extends HomeLayoutState {}
+
+class UserSignOutSuccess extends HomeLayoutState {}

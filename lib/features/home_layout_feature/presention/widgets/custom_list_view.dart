@@ -5,7 +5,9 @@ import 'package:bmi/cores/widgets/cutom_text_Form_filed.dart';
 import 'package:bmi/cores/widgets/default_button.dart';
 import 'package:bmi/features/home_feature/presention/cubit/home_cubit.dart';
 import 'package:bmi/features/home_layout_feature/presention/cubit/home_layout_cubit.dart';
+import 'package:bmi/features/home_layout_feature/presention/widgets/custom_Bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CutomListViewData extends StatefulWidget {
@@ -21,10 +23,10 @@ class CutomListViewData extends StatefulWidget {
 
 class _CutomListViewDataState extends State<CutomListViewData> {
   AutovalidateMode? autovalidateMode;
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final formkey = GlobalKey<FormState>();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     autovalidateMode = AutovalidateMode.disabled;
   }
@@ -93,8 +95,11 @@ class _CutomListViewDataState extends State<CutomListViewData> {
                               autovalidateMode: autovalidateMode!,
                               state: widget.state,
                               index: index,
+                              homeLayoutCubit: widget.homeLayoutCubit,
                             );
-                          });
+                          }).then((value) {
+                        widget.homeLayoutCubit.clearDataFields();
+                      });
                     },
                   ),
                   IconButton(
@@ -110,104 +115,5 @@ class _CutomListViewDataState extends State<CutomListViewData> {
         );
       },
     );
-  }
-}
-
-class CustomBottomSheet extends StatelessWidget {
-  CustomBottomSheet(
-      {super.key,
-      required this.formKey,
-      required this.autovalidateMode,
-      required this.state,
-      required this.index});
-  GlobalKey<FormState> formKey;
-  AutovalidateMode autovalidateMode;
-  UserDataComeSuccess state;
-  int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: double.infinity,
-        child: Form(
-          key: formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomeTextFiled(
-                  autovalidateMode: autovalidateMode,
-                  textInputType: TextInputType.number,
-                  textEditingController:
-                      getIt.get<HomeCubit>().heightController,
-                  hinText: AppStrings.hintTextHeight,
-                  validator: (String? val) {
-                    return getIt.get<HomeCubit>().checkValdiateHeight(val);
-                  },
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CustomeTextFiled(
-                  autovalidateMode: autovalidateMode,
-                  textInputType: TextInputType.number,
-                  textEditingController:
-                      getIt.get<HomeCubit>().weightController,
-                  hinText: AppStrings.hintTextWeightt,
-                  validator: (String? val) {
-                    return getIt.get<HomeCubit>().checkValidateWeight(val);
-                  },
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CustomeTextFiled(
-                  autovalidateMode: autovalidateMode,
-                  textInputType: TextInputType.number,
-                  textEditingController: getIt.get<HomeCubit>().ageController,
-                  hinText: AppStrings.hintTextAge,
-                  validator: (String? val) {
-                    return getIt.get<HomeCubit>().checkValidateAge(val);
-                  },
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                DefalutButton(
-                    title: "Edit",
-                    onTap: () async {
-                      if (formKey.currentState!.validate()) {
-                        //   await getIt.get<HomeCubit>().calcualteBmi();
-
-                        //TODO here we will reaplace the new fnction s
-                        getIt.get<HomeLayoutCubit>().editItemForUserCubit(
-                            documentId: state.myList[index].id!,
-                            age: getIt
-                                .get<HomeCubit>()
-                                .ageController
-                                .text
-                                .toString(),
-                            weight: getIt
-                                .get<HomeCubit>()
-                                .weightController
-                                .text
-                                .toString(),
-                            height: getIt
-                                .get<HomeCubit>()
-                                .heightController
-                                .text
-                                .toString());
-                      } else {
-                        autovalidateMode = AutovalidateMode.always;
-                      }
-                    }),
-                SizedBox(
-                  height: 50.h,
-                ),
-              ],
-            ),
-          ),
-        ));
   }
 }

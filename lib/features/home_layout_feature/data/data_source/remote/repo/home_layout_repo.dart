@@ -9,4 +9,6 @@ abstract class HomeLayoutRepo {
       required String weight,
       required String height,
       required String age});
+
+  Future<void> signOutUser();
 }
